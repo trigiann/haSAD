@@ -6,7 +6,7 @@ import (
 	"net"
 )
 
-//var (clients = make (map[net.Conn]string))
+var (clients = make (map[string]net.Conn))
 
 func main() {
 	server, err := net.Listen("tcp", ":7000")
@@ -29,7 +29,7 @@ func main() {
 }
 
 
-func listenConnection(conn net.Conn) {
+/*func listenConnection(conn net.Conn) {
 	// buffer := make([]byte, 1400)
  //    dataSize, err := conn.Read(buffer)
  //    if err != nil {
@@ -56,18 +56,18 @@ func listenConnection(conn net.Conn) {
         }
         fmt.Println("Message sent: ", string(data))
 	}
-}
+}*/
 
 
-/*func listenConnection(conn net.Conn) {
+func listenConnection(conn net.Conn) {
 	buffer := make([]byte, 1400)
  	dataSize,_ := conn.Read(buffer)
     nick := buffer[:dataSize]
     
 	//Register NEW client
-	clients[conn] = string(nick)
+	clients[string(nick)] = conn
 
-	for clients := range clients {
+	for {
 		dataSize, err := conn.Read(buffer)
         if err != nil {
                 fmt.Println("connection closed")
@@ -77,14 +77,16 @@ func listenConnection(conn net.Conn) {
         data := buffer[:dataSize]
         fmt.Println("received message: ", string(data))
        
-        _, err = clients.Write(data)
+       for key, i := range clients {
+        _, err = i.Write(data)
         if err != nil {
                 log.Fatalln(err)
         }
-        fmt.Println("Message sent: ", string(data))
+        fmt.Println(key, string(data))
+    }
 
 
 	}
 
 
-}*/
+}
