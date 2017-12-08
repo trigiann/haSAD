@@ -23,7 +23,6 @@ func main() {
 			log.Fatalln(err)
 		}
 		go listenConnection(conn)
-		fmt.Println("new connection: ")
 	}
 		
 }
@@ -63,7 +62,7 @@ func listenConnection(conn net.Conn) {
 	buffer := make([]byte, 1400)
  	dataSize,_ := conn.Read(buffer)
     nick := buffer[:dataSize]
-    
+    fmt.Println("new connection: ", string(nick))
 	//Register NEW client
 	clients[string(nick)] = conn
 
@@ -82,7 +81,7 @@ func listenConnection(conn net.Conn) {
         if err != nil {
                 log.Fatalln(err)
         }
-        fmt.Println(key, string(data))
+        fmt.Println(string(nick), string(data))
     }
 
 
